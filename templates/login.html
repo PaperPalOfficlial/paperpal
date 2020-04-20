@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<!-- 导入 css 和 js -->
+
+<head>
+  <title>Paper Pal</title>
+  <link rel="stylesheet" href="../static/css/one.css" />
+  <link rel="stylesheet" href="../static/css/two.css" />
+  <link rel="stylesheet" href="../static/css/emoji.css" />
+</head>
+
+<body>
+  <!-- 导航栏 -->
+  <nav class="navbar navbar-expand-lg navbar-light bg-dark header">
+    <div class="collapse navbar-collapse order-1" id="navbarSupportedContent">
+      <a class="navbar-brand nav-name" href="{{url_for('main')}}"><b>Paper Pal</b></a>
+      <ul class="navbar-nav mr-auto">
+          <li class="nav-item header-search">
+            <form
+              action="{{url_for('query')}}"
+              method="get"
+              id="id_global_search_form"
+            >
+              <input
+                type="text"
+                name="q_meta"
+                style="display:none"
+                id="q_meta"
+              />
+              <input
+                id="id_global_search_input"
+                name="q"
+                class="global-search ui-autocomplete-input"
+                type="search"
+                autocomplete="off"
+                placeholder="Search for papers and code"
+              />
+              <button type="submit" class="icon">
+                <img src="../static/query.jpg" style="height: 15px" />
+              </button>
+            </form>
+          </li>
+        </ul>
+      <div class="order-3">
+        <div class="navbar-nav">
+          <ul class="navbar-nav ml-auto navbar-subscribe">
+            <li class="nav-item nav-link-right">
+              <a class="nav-link-right" href="{{url_for('about')}}">关于</a>
+            </li>
+
+            {% if user != '' %}
+            <li class="nav-item nav-link-right">
+              <a class="nav-link-right nav-textual-link" style="position:relative;top:1px"
+                href="{{url_for('home')}}">{{user}} 的主页</a>
+            </li>
+
+            <li class="nav-item nav-link-right">
+              <a class="nav-link-right nav-textual-link" style="position:relative;top:1px"
+                href="/?logout=true">登录</a>
+            </li>
+            {% else %}
+            <li class="nav-item nav-link-right">
+              <a class="nav-link-right nav-textual-link" style="position:relative;top:1px"
+                href="/login?status=login">退出</a>
+            </li>
+
+            <li class="nav-item nav-link-right">
+              <a class="nav-link-right nav-textual-link" style="position:relative;top:1px"
+                href="/login?status=register">注册</a>
+            </li>
+            {% endif %}
+          </ul>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- 正文  -->
+  <div class="container">
+    <div class="container content content-buffer">
+      {% if status == 'login' %} 
+      <form method="post" action="/login?status=login" class="form-signin">
+      {% else %}
+      <form method="post" action="/login?status=register" class="form-signin">
+      {% endif %}
+        {{ form.csrf_token }}
+          {%if errorInfo == 'login' %}
+<!--          <p class="alert alert-warning alert-dismissible fade show">Your username and password didn't match. Please try again.</p>-->
+          <div class="alert alert-warning alert-dismissible fade show" role="alert" style="text-align:center;padding-bottom:3%">
+            Your username and password didn't match. Please try again.
+          </div>
+          {% elif errorInfo == 'register'%}
+
+          <div class="alert alert-warning alert-dismissible fade show" role="alert" style="text-align:center;padding-bottom:3%">
+           the name has been used
+          </div>
+          {%else%}
+          <p>{{errorInfo}}</p>
+          {%endif%}
+        {% if status == 'login' %}
+        <h4 class="mb-3 font-weight-normal">用户登录</h4>
+        {% else %}
+        <h4 class="mb-3 font-weight-normal">用户注册</h4>
+        {% endif %}
+        {{form.username(class='form-control')}}
+        <label for="inputPassword" class="sr-only">Password</label>
+        {{form.password(class='form-control')}}
+        <div class="checkbox mb-3">
+          <label>
+            <input type="checkbox" value="remember-me" /> 记住我
+          </label>
+        </div>
+        {{form.submit(class="btn btn-lg btn-primary btn-block")}}
+      </form>
+    </div>
+  </div>
+</body>
+
+</html>

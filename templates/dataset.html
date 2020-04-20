@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<!-- 导入 css 和 js -->
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <title>Paper Pal</title>
+  <link rel="stylesheet" href="../static/css/one.css" />
+  <link rel="stylesheet" href="../static/css/two.css" />
+  <link rel="stylesheet" href="../static/css/emoji.css" />
+</head>
+
+<body>
+  <!-- 导航栏 -->
+  <nav class="navbar navbar-expand-lg navbar-light bg-dark header">
+    <div class="collapse navbar-collapse order-1" id="navbarSupportedContent">
+      <a class="navbar-brand nav-name" href="{{ url_for('main') }}"><b>Paper Pal</b></a>
+      <ul class="navbar-nav mr-auto">
+          <li class="nav-item header-search">
+            <form
+              action="{{url_for('query')}}"
+              method="get"
+              id="id_global_search_form"
+            >
+              <input
+                type="text"
+                name="q_meta"
+                style="display:none"
+                id="q_meta"
+              />
+              <input
+                id="id_global_search_input"
+                name="q"
+                class="global-search ui-autocomplete-input"
+                type="search"
+                autocomplete="off"
+                placeholder="Search for papers and code"
+              />
+              <button type="submit" class="icon">
+                <img src="../static/query.jpg" style="height: 15px" />
+              </button>
+            </form>
+          </li>
+        </ul>
+      <div class="order-3">
+        <div class="navbar-nav">
+          <ul class="navbar-nav ml-auto navbar-subscribe">
+            <li class="nav-item nav-link-right">
+              <a class="nav-link-right" href="{{ url_for('about') }}">关于</a>
+            </li>
+
+            {% if user != '' %}
+            <li class="nav-item nav-link-right">
+              <a class="nav-link-right nav-textual-link" style="position:relative;top:1px"
+                href="/home">{{ user }} 的主页</a>
+            </li>
+
+            <li class="nav-item nav-link-right">
+              <a class="nav-link-right nav-textual-link" style="position:relative;top:1px" href="/?logout=true">退出</a>
+            </li>
+            {% else %}
+            <li class="nav-item nav-link-right">
+              <a class="nav-link-right nav-textual-link" style="position:relative;top:1px"
+                href="/login?status=login">登录</a>
+            </li>
+
+            <li class="nav-item nav-link-right">
+              <a class="nav-link-right nav-textual-link" style="position:relative;top:1px"
+                href="/login?status=register">注册</a>
+            </li>
+            {% endif %}
+          </ul>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- 正文  -->
+  <div class="container">
+    <div class="container content content-buffer">
+      <!-- 标题 -->
+      <div class="title">
+        <div class="row">
+            <div class="col-lg-6">
+                <h1 class="home-page-title">公开数据集</h1>
+            </div>
+            <div class="col-lg-6">
+            <div style="float: right;" class="btn-group btn-group-sm pull-right home-page-navigation" role="group"
+                aria-label="Basic example">
+                {% if show == 'latest' %}
+                <a href="{{url_for('recommend')}}" class="list-button">为您推荐</a>
+                <a href="{{url_for('latest')}}" class="list-button-active">最新论文</a>
+                {% else %}
+                <a href="{{url_for('recommend')}}" class="list-button">为您推荐</a>
+                <a href="{{url_for('latest')}}" class="list-button">最新论文</a>
+                {% endif %}
+                <a href="{{url_for('conference')}}" class="list-button"
+                >会议期刊论文</a>
+                <a href="{{url_for('dataset')}}" class="list-button-active">公开数据集</a>
+            </div>
+            </div>
+        </div>
+      </div>
+    
+      <h5>Computer Vision</h5>
+      <ul>
+          <li><a href="http://cocodataset.org/#home" target="_blank">COCO</a>: COCO is a large-scale object detection, segmentation, and captioning dataset. </li>
+          <li><a href="https://ai.googleblog.com/2016/09/introducing-open-images-dataset.html" target="_blank">Google Open Image Dataset</a>: a dataset consisting of ~9 million URLs to images that have been annotated with labels spanning over 6000 categories.</li>
+          <li><a href="https://www.umdfaces.io/" target="_blank">UMDFaces</a>:UMDFaces is a face dataset divided into two parts: Still Images - 367,888 face annotations for 8,277 subjects and Video Frames - Over 3.7 million annotated video frames from over 22,000 videos of 3100 subjects.</li>
+          <li><a href="https://ai.googleblog.com/2016/09/announcing-youtube-8m-large-and-diverse.html" target="_blank">Youtube 8M</a>: a dataset of 8 million YouTube video URLs (representing over 500,000 hours of video), along with video-level labels from a diverse set of 4800 Knowledge Graph entities.</li>
+      </ul>
+
+      <h5>Natural Language Processing</h5>
+      <ul>
+          <li><a href="https://msropendata.com/datasets/30a504b0-cff2-4d4a-864f-3bc9a66f9d7e" target="_blank">DESM</a>: The DESM Word Embeddings dataset may include terms that some may consider offensive, indecent or otherwise objectionable. </li>
+          <li><a href="https://snap.stanford.edu/data/web-Amazon.html" target="_blank">Amazon:</a>This dataset consists of reviews from amazon. The data span a period of 18 years, including ~35 million reviews up to March 2013. Reviews include product and user information, ratings, and a plaintext review.</li>
+          <li><a href="https://rajpurkar.github.io/SQuAD-explorer/" target="_blank">SQuAD2.0</a>: Stanford Question Answering Dataset (SQuAD) is a reading comprehension dataset, consisting of questions posed by crowdworkers on a set of Wikipedia articles, where the answer to every question is a segment of text, or span, from the corresponding reading passage, or the question might be unanswerable.</li>
+          <li><a href="http://books.google.com/ngrams/" target="_blank">Google Books Ngrams</a>: A data set containing Google Books n-gram corpora. This data set is freely available on Amazon S3 in a Hadoop friendly file format and is licensed under a Creative Commons Attribution 3.0 Unported License. </li>
+          <li><a href="https://www.quora.com/q/quoradata/First-Quora-Dataset-Release-Question-Pairs" target="_blank">Quora</a>: This dataset consists of over 400,000 lines of potential question duplicate pairs. Each line contains IDs for each question in the pair, the full text for each question, and a binary value that indicates whether the line truly contains a duplicate pair.</li>
+          <li><a href="https://blog.einstein.ai/the-wikitext-long-term-dependency-language-modeling-dataset/" target="_blank">WikiText</a>: The WikiText language modeling dataset is a collection of over 100 million tokens extracted from the set of verified Good and Featured articles on Wikipedia. The dataset is available under the Creative Commons Attribution-ShareAlike License.</li>
+          <li><a href="https://msropendata.com/datasets/ec37dd7f-d67d-4321-9519-8a3bd605317a" target="_blank">Filling the Blanks for Mad Libs</a>: This data contains our custom Mad Libs that accompany the EMNLP 2017 paper called “Filling the Blanks for Mad Libs Humor”. There are 50 Mad Libs in total. For each, we provide our original Mad Lib (with no copyright). The blanks in these Mad Libs include the original word and the hint type (e.g. animal, food, noun, adverb).</li>
+      </ul>
+
+      <h5>Recommendation</h5>
+      <ul>
+          <li><a href="https://www.yelp.com/dataset" target="_blank">Yelp</a>: The Yelp dataset is a subset of our businesses, reviews, and user data for use in personal, educational, and academic purposes. </li>
+          <li><a href="https://grouplens.org/datasets/movielens/" target="_blank">MovieLens</a>: GroupLens Research has collected and made available rating data sets from the MovieLens web site.</li>          
+          <li><a href="https://grouplens.org/datasets/hetrec-2011/" target="_blank">Last.fm</a>Music recommendation dataset with access to underlying social network and other metadata that can be useful for hybrid systems.</li>
+          <li><a href="https://www.kaggle.com/c/msdchallenge" target="_blank">Million Song Dataset</a>: Large, metadata-rich, open source dataset on Kaggle that can be good for people experimenting with hybrid recommendation systems.</li>
+          <li><a href="https://goldberg.berkeley.edu/jester-data/" target="_blank">Jester</a>: 4.1 Million continuous ratings (-10.00 to +10.00) of 100 jokes from 73,421 users: collected between April 1999 - May 2003.</li>
+      </ul>
+      
+      <h5>Network</h5>
+      <ul>
+          <li><a href="https://msropendata.com/datasets/a8a6aa9d-521b-420b-a281-9807000d2b92" target="_blank">Represent Programs with Graphs</a>: This dataset contains the graphs (parsed source code) for the open-source projects used in the ICLR 2018 paper "Learning to Represent Programs with Graphs"</li>
+          <li><a href="https://relational.fit.cvut.cz/dataset/CORA" target="_blank">Cora</a>: The Cora dataset consists of 2708 scientific publications classified into one of seven classes. The citation network consists of 5429 links.</li>
+          <li><a href="https://github.com/shobeir/fakhraei_tcbb2014" target="_blank">Drug-Target Interaction</a>:This dataset contains interactions between drugs and targets collected from DrugBank, KEGG Drug, DCDB, and Matador. It was originally collected by Perlman et al. It contains 315 drugs, 250 targets, 1,306 drug-target interactions, 5 types of drug-drug similarities, and 3 types of target-target similarities.</li>
+          <li><a href="http://csxstatic.ist.psu.edu/downloads/data" target="_blank">CiteSeer</a>: CiteSeerx data and metadata are available for others to use. Data available includes CiteSeerx metadata, databases, data sets of pdf files and text of pdf files.</li>
+      </ul>
+
+      <h5>Audio</h5>
+      <ul>
+          <li><a href="https://research.google.com/audioset/" target="_blank">Google AudioSet</a>: AudioSet consists of an expanding ontology of 632 audio event classes and a collection of 2,084,320 human-labeled 10-second sound clips drawn from YouTube videos.</li>
+          <li><a href="https://catalog.ldc.upenn.edu/LDC2002T43" target="_blank">HUB5</a>: 2000 HUB5 English Evaluation Transcripts was developed by the Linguistic Data Consortium (LDC)  and consists of transcripts of 40 English telephone conversations used in the 2000 HUB5 evaluation sponsored by NIST (National Institute of Standards and Technology).</li>
+          <li><a href="https://www.openslr.org/12/" target="_blank">OpenSLR</a>: LibriSpeech is a corpus of approximately 1000 hours of 16kHz read English speech, prepared by Vassil Panayotov with the assistance of Daniel Povey. The data is derived from read audiobooks from the LibriVox project, and has been carefully segmented and aligned.</li>
+      </ul>
+
+      <h5>Knowledge Graph</h5>
+      <ul>
+          <li><a href="https://msropendata.com/datasets/2b11f0e1-a9b2-4983-8c60-a9eb92950c79" target="_blank">FB15K-237 Knowledge Base Completion</a>: This dataset contains knowledge base relation triples and textual mentions of Freebase entity pairs, as used in the work published in (Toutanova and Chen CVSM-2015) and (Toutanova et al. EMNLP-2015).</li>
+          <li><a href="https://msropendata.com/datasets/dff630ed-93f5-4b31-90eb-401a0f9ed75c" target="_blank">Missing Entity Type</a>: This is a dataset that can be used for training and evaluating knowledge base completion approaches for inferring missing entity type instances.</li>
+      </ul>
+
+      <h5>Others</h5>
+      <ul>
+          <li><a href="https://msropendata.com/datasets/3e59eb56-b35c-4919-9434-c448cf94d0c1" target="_blank">Efficient Selection of Machine Learning Configuration</a>: A machine learning configuration refers to a combination of preprocessor, learner, and hyperparameters. Given a set of configurations and a large dataset randomly split into training and testing set, we study how to efficiently select the best configuration with approximately the highest testing accuracy when trained from the training set. </li>
+          <li><a href="https://msropendata.com/datasets/85596452-0fe3-4335-bc00-ae83ee8ffcfd" target="_blank">FigureQA</a>: Answering questions about a given image is a difficult task, requiring both an understanding of the image and the accompanying query. Microsoft research Montreal’s FigureQA dataset introduces a new visual reasoning task for research, specific to graphical plots and figures. The task comes with an additional twist: all of the questions are relational, requiring the comparison of several or all elements of the underlying plot.</li>
+      </ul>
+
+    </div>
+  </div>
+</body>
+
+</html>

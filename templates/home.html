@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- 导入 css 和 js -->
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <title>Paper Pal</title>
+  <link rel="stylesheet" href="../static/css/one.css" />
+  <link rel="stylesheet" href="../static/css/two.css" />
+  <link rel="stylesheet" href="../static/css/emoji.css" />
+    <script type="text/javascript" src="../static/js/popper.min.js"></script>
+    <script type="text/javascript" src="../static/js/jquery.min.js"></script>
+    <script src="../static/js/bootstrap.min.js"></script>
+</head>
+
+<body>
+  <!-- 导航栏 -->
+  <nav class="navbar navbar-expand-lg navbar-light bg-dark header">
+    <div class="collapse navbar-collapse order-1" id="navbarSupportedContent">
+      <a class="navbar-brand nav-name" href="{{url_for('main')}}"><b>Paper Pal</b></a>
+      <ul class="navbar-nav mr-auto">
+          <li class="nav-item header-search">
+            <form
+              action="{{url_for('query')}}"
+              method="get"
+              id="id_global_search_form"
+            >
+              <input
+                type="text"
+                name="q_meta"
+                style="display:none"
+                id="q_meta"
+              />
+              <input
+                id="id_global_search_input"
+                name="q"
+                class="global-search ui-autocomplete-input"
+                type="search"
+                autocomplete="off"
+                placeholder="Search for papers and code"
+              />
+              <button type="submit" class="icon">
+                <img src="../static/query.jpg" style="height: 15px" />
+              </button>
+            </form>
+          </li>
+        </ul>
+      <div class="order-3">
+        <div class="navbar-nav">
+          <ul class="navbar-nav ml-auto navbar-subscribe">
+            <li class="nav-item nav-link-right">
+              <a class="nav-link-right" href="{{url_for('about')}}">关于</a>
+            </li>
+
+            {% if user != '' %}
+            <li class="nav-item nav-link-right">
+              <a class="nav-link-right nav-textual-link" style="position:relative;top:1px"
+                href="{{url_for('home')}}">{{user}} 的主页</a>
+            </li>
+            <li class="nav-item nav-link-right">
+              <a class="nav-link-right nav-textual-link" style="position:relative;top:1px"
+                href="/?logout=true">退出</a>
+            </li>
+            {% else %}
+            <li class="nav-item nav-link-right">
+              <a class="nav-link-right nav-textual-link" style="position:relative;top:1px"
+                href="/login?status=login">登录</a>
+            </li>
+
+            <li class="nav-item nav-link-right">
+              <a class="nav-link-right nav-textual-link" style="position:relative;top:1px"
+                href="/login?status=register">注册</a>
+            </li>
+            {% endif %}
+          </ul>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- 正文  -->
+  <div class="container">
+
+    <div class="container content content-buffer">
+
+        <div class="about-page">
+            <div >
+                    <a class="btn btn-dark" href="{{url_for('home',choice='record')}}" style="width:10%;float:left;margin-bottom:2%;margin-right:2%;color:white">浏览记录</a>
+                    <a class="btn btn-dark" href="{{url_for('home',choice='collection')}}" style="width:10%;float:left;margin-bottom:2%;margin-right:2%;color:white">论文收藏</a>
+
+            </div>
+<!--            <button type="button" class="btn btn-dark" style="width:10%;float:left;margin-bottom:2%;margin-right:2%">浏览记录</button>-->
+<!--            <button type="button" class="btn btn-dark" style="width:10%;float:left;margin-bottom:2%;margin-right:2%">用户收藏</button>-->
+            <div>
+                <table class="table table-striped">
+                {%  if choice == 'collection' %}
+                    <thead>
+                        <div>
+
+                            <th scope="col" style="width:50%">{{user}}创建的文件夹</th>
+                            <th>
+
+                                <button type="button" data-toggle="modal" data-target="#myModal" style="float:right">
+                                    <span style="display: inline-flex; align-items: center;">&#8203;
+                                        <svg class= fill="currentColor" viewBox="0 0 24 24" width="1.2em" height="1.2em">
+                                            <path d="M13.491 10.488s-.012-5.387 0-5.998c-.037-1.987-3.035-1.987-2.997 0-.038 1.912 0 5.998 0 5.998H4.499c-1.999.01-1.999 3.009 0 3.009s5.995-.01 5.995-.01v5.999c0 2.019 3.006 2.019 2.997 0-.01-2.019 0-5.998 0-5.998s3.996.009 6.004.009c2.008 0 2.008-3-.01-3.009h-5.994z" fill-rule="evenodd"></path>
+                                        </svg>
+                                    </span>
+                                    新建收藏夹
+                                </button>
+                            </th>
+                        </div>
+                    </thead>
+                    <tbody>
+                            {% for collection in files %}
+                            <tr>
+                                <td><a href="{{url_for('home',choice='collectionContent',collectionName=collection)}}" style="color:black">{{collection}}</a></td>
+                                <td>
+                                    <button type="button" class="btn btn-outline-dark" style="width:30%;float:right" name="Collection" value="{{collection}}">
+                                        <span style="display: inline-flex; align-items: center;">&#8203;
+                                        </span>
+                                        <a href="{{url_for('home',collectionName=collection,choice='collectionSimilarPaper')}}" style="color:black">
+                                            查看相似论文
+                                        </a>
+                                     </button>
+                                    <button type="button" class="btn btn-outline-dark" style="width:15%;float:right;margin-right:2%;text-align:center" name="Collection" value="{{collection}}">
+                                        <span style="display: inline-flex; align-items: center;">&#8203;
+                                        </span>
+                                        <a href="{{url_for('home',collectionName=collection,choice='collectionDelete')}}" style="color:black">
+                                            删除
+                                        </a>
+                                     </button>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                    </tbody>
+                {%elif choice == 'collectionSimilarPaper' %}
+                    <thead>
+                        <tr>
+                            <th scope="col" style="width:50%">论文标题</th>
+                            <th scope="col">代码</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for paper in collectionSimilarPapers %}
+                        <tr>
+                            <td><a href="/paperPage?paperId={{paper.paperId}}" target='_blank' style="color:black">{{paper.title}}</a></td>
+                            <td><a href="{{paper.code}}" target='_blank' style="color:blue ">{{paper.code}}</a></td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                {%elif choice == 'collectionContent' %}
+                    <thead>
+                        <tr>
+                            <th scope="col" style="width:50%">论文标题</th>
+                            <th scope="col">代码</th>
+                            <th scope="col"></th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for paper in collectionContent %}
+                        <tr>
+                            <td><a href="/paperPage?paperId={{paper.paperId}}" target='_blank' style="color:black">{{paper.title}}</a></td>
+                            <td><a href="{{paper.code}}" target='_blank' style="color:blue ">{{paper.code}}</a></td>
+                            <td>
+                                <button type="button" class="btn btn-outline-dark" style="width:100%;margin-right:2%;text-align:center" name="Collection" value="{{collection}}">
+                                    <span style="display: inline-flex; align-items: center;">&#8203;
+                                    </span>
+                                    <a href="{{url_for('home',collectionName=collection,choice='paperDelete',paperId=paper.paperId)}}" style="color:black">
+                                        删除
+                                    </a>
+                                 </button>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                {%else%}
+                    <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col" style="width:50%">论文标题</th>
+                            <th scope="col" style="width:10%">阅读时间</th>
+                            <th scope="col">代码</th>
+                        </tr>
+                    </thead>
+                    <tbody id='table'>
+                        {% for udata in user_data %}
+                        <tr>
+                            <th scope="row">{{udata.num}}</th>
+                            <td><a>{{udata.title}}</a></td>
+                            <td>{{udata.date}}</td>
+                            <td><a href="{{udata.code}}" target='_blank'>{{udata.code}}</a></td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                    {%endif%}
+
+            </table>
+            </div>
+
+
+            <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <form class="modal-content"
+                          action="{{url_for('home')}}"
+                          method="get">
+                        <div class="modal-header" >
+                            <h4 class="modal-title" id="myModalLabel">
+                                创建新收藏夹
+                            </h4>
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true" style="float:right">
+                                &times;
+                            </button>
+
+                        </div>
+                        <div class="modal-body">
+                            <div class="form-group">
+                                <input type="text" name="n" class="form-control" id="txt_departmentname" placeholder="收藏夹标题" style="margin-top:3%">
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-primary" name="c" value="True">
+                                创建
+                            </button>
+                            <button type="button" class="btn btn-primary" data-dismiss="modal">关闭
+                            </button>
+                        </div>
+                    </form>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal -->
+        </div>
+    </div>
+</div>
+
+
+
+
+
+</body>
+
+<script>
+      $("#btn_add").click(function () {
+      $("#myModalLabel").text("新建收藏夹");
+      $('#myModal').modal();
+     });
+    $(document).ready(function(){
+      console.log('ready');
+      $("a.badge, a.titlea").bind('click', function(x){
+          console.log('click');
+          console.log(x.currentTarget.href);
+          $.ajax({
+          type: "post",
+          url: "/record",
+            dataType : "json",
+            contentType : "application/json",
+            data: JSON.stringify({'url': x.currentTarget.href, 'id': x.currentTarget.id}),
+          success: function (d) {
+            console.log(d);
+          }
+        });
+
+      });
+
+      }
+)
+</script>
+
+</html>

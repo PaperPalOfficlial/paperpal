@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<!-- 导入 css 和 js -->
+
+<head>
+  <title>Paper Pal</title>
+  <link rel="stylesheet" href="../static/css/one.css" />
+  <link rel="stylesheet" href="../static/css/two.css" />
+  <link rel="stylesheet" href="../static/css/emoji.css" />
+</head>
+
+<body>
+  <!-- 导航栏 -->
+  <nav class="navbar navbar-expand-lg navbar-light bg-dark header">
+    <div class="collapse navbar-collapse order-1" id="navbarSupportedContent">
+      <a class="navbar-brand nav-name" href="{{ url_for('latest') }}"><b>Paper Pal</b></a>
+      <ul class="navbar-nav mr-auto">
+          <li class="nav-item header-search">
+            <form
+              action="{{url_for('query')}}"
+              method="get"
+              id="id_global_search_form"
+            >
+              <input
+                type="text"
+                name="q_meta"
+                style="display:none"
+                id="q_meta"
+              />
+              <input
+                id="id_global_search_input"
+                name="q"
+                class="global-search ui-autocomplete-input"
+                type="search"
+                autocomplete="off"
+                placeholder="Search for papers and code"
+              />
+              <button type="submit" class="icon">
+                <img src="../static/query.jpg" style="height: 15px" />
+              </button>
+            </form>
+          </li>
+        </ul>
+      <div class="order-3">
+        <div class="navbar-nav">
+          <ul class="navbar-nav ml-auto navbar-subscribe">
+            <li class="nav-item nav-link-right">
+              <a class="nav-link-right" href="{{ url_for('about') }}">关于</a>
+            </li>
+
+            {% if user != '' %}
+            <li class="nav-item nav-link-right">
+              <a class="nav-link-right nav-textual-link" style="position:relative;top:1px"
+                href="/home">{{ user }} 的主页</a>
+            </li>
+
+            <li class="nav-item nav-link-right">
+              <a class="nav-link-right nav-textual-link" style="position:relative;top:1px" href="/?logout=true">退出</a>
+            </li>
+            {% else %}
+            <li class="nav-item nav-link-right">
+              <a class="nav-link-right nav-textual-link" style="position:relative;top:1px"
+                href="/login?status=login">登录</a>
+            </li>
+
+            <li class="nav-item nav-link-right">
+              <a class="nav-link-right nav-textual-link" style="position:relative;top:1px"
+                href="/login?status=register">注册</a>
+            </li>
+            {% endif %}
+          </ul>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+
+  <!-- 正文  -->
+  <div class="container">
+    <div class="container content content-buffer">
+      <div class="about-page">
+        <div class="col-md-8">
+          <h1>关于 Paper Pal</h1>
+          <p style="text-indent:2em">
+            Paper Pal 是一个以CCF分区论文+代码+中文期刊+推荐为定位学术论文推荐系统，专注于为 AI
+            领域的研究人员推荐其最感兴趣的论文和代码。
+          </p>
+          <p>Paper Pal 的初衷在于帮助科研工作者能更高效地进行研究:</p>
+          <p>(1) 为刚入门的新手提供论文和代码的学习资源。</p>
+          <p>(2) 或者为有经验的研究者记录他们的相关工作</p>
+          <p>希望您能提供宝贵的意见 (邮箱: yuweifu777@163.com)，帮助更好的完善 Paper Pal。</p>
+          <h1>Paper Pal论文收录情况</h1>
+          <p style="text-indent:2em">目前，Paper Pal已经收录了29507篇英文文献和6147份代码，以及1946篇中文文献。整合了人工智能、数据挖掘领域的中国计算机学会分区的A、B类会议以及国内计算机领域的中文期刊《计算机学报》、《软件学报》、《计算机研究与发展》以及《大数据》的论文</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+
+</html>
